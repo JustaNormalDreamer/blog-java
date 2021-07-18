@@ -1,0 +1,55 @@
+micronaut:
+  application:
+    name: micronautJava
+  server:
+    cors:
+      enabled: true
+      configurations:
+        web:
+          allowedOrigins:
+            - http://localhost:8080
+          allowedMethods:
+            - POST
+            - PUT
+            - GET
+            - DELETE
+          allowedHeaders:
+            - Content-Type
+            - Authorization
+            - Accept
+          exposedHeaders:
+            - Content-Type
+            - Authorization
+          allowedCredentials: false
+          maxAge: 3600
+    netty:
+      access-logger:
+        enabled: true
+        logger-name: netty-logger
+        log-format: common
+
+datasources:
+  default:
+    url: jdbc:postgresql://localhost:5432/java
+    driverClassname: org.postgresql.Driver
+    username: postgres
+    password: password
+jpa:
+  default:
+    properties:
+      hibernate:
+        hbm2ddl:
+          auto: update
+        dialect: org.hibernate.dialect.PostgreSQL95Dialect
+        show_sql: true
+    packages-to-scan:
+      - 'micronaut.java.person'
+      - 'micronaut.java.users'
+      - 'micronaut.java.posts'
+    entity-scan:
+      packages:
+        - 'micronaut.java.person'
+        - 'micronaut.java.users'
+        - 'micronaut.java.posts'
+
+

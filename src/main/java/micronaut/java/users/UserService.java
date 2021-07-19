@@ -10,6 +10,7 @@ package micronaut.java.users;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.util.Optional;
+import java.util.UUID;
 
 @Singleton
 public class UserService {
@@ -20,7 +21,7 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public Optional<User> fetchUser(Long id) {
+    public Optional<User> fetchUser(UUID id) {
         return userRepository.findById(id);
     }
 
@@ -32,7 +33,7 @@ public class UserService {
         return userRepository.update(user);
     }
 
-    public void deleteUser(Long id) {
+    public void deleteUser(UUID id) {
         userRepository.deleteById(id);
     }
 }

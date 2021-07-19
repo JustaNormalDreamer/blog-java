@@ -5,7 +5,7 @@
  *
  */
 
-package micronaut.java.users;
+package micronaut.java.blog.posts;
 
 import io.micronaut.data.annotation.Repository;
 import io.micronaut.data.repository.CrudRepository;
@@ -13,5 +13,5 @@ import io.micronaut.data.repository.CrudRepository;
 import java.util.UUID;
 
 @Repository
-public interface UserRepository extends CrudRepository<User, UUID> {
+public interface PostRepository extends CrudRepository<Post, UUID> {
 }

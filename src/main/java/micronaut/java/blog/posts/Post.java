@@ -9,23 +9,29 @@ package micronaut.java.blog.posts;
 
 import io.micronaut.data.annotation.DateCreated;
 import io.micronaut.data.annotation.DateUpdated;
+import micronaut.java.users.User;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.UUID;
 
 @Entity
 @Table(name = "posts")
 public class Post {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_sequence")
-    @SequenceGenerator(name = "user_sequence", sequenceName = "user_sequence", allocationSize=1)
-    private Long id;
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+    private UUID id;
 
     private String name;
 
     private String description;
 
     private boolean status;
+
+    @ManyToOne
+    private User user;
 
     @DateCreated
     private Date created_at;
@@ -35,20 +41,42 @@ public class Post {
 
     public Post() {}
 
-    public Post(Long id, String name, String description, boolean status, Date created_at, Date updated_at) {
+    public Post(String name, String description, boolean status) {
+        this.name = name;
+        this.description = description;
+        this.status = status;
+    }
+
+    public Post(UUID id, String name, String description, boolean status) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.status = status;
+    }
+
+    public Post(UUID id, String name, String description, boolean status, User user, Date created_at, Date updated_at) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.status = status;
+        this.user = user;
         this.created_at = created_at;
         this.updated_at = updated_at;
     }
 
-    public Long getId() {
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public UUID getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 

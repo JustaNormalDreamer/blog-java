@@ -9,17 +9,19 @@ package micronaut.java.users;
 
 import io.micronaut.data.annotation.DateCreated;
 import io.micronaut.data.annotation.DateUpdated;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.UUID;
 
 @Entity
 @Table(name = "users")
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_sequence")
-    @SequenceGenerator(name = "user_sequence", sequenceName = "user_sequence", allocationSize=1)
-    private Long id;
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+    private UUID id;
 
     private String name;
 
@@ -46,7 +48,7 @@ public class User {
         this.password = password;
     }
 
-    public User(Long id, String name, String username, String email, String password) {
+    public User(UUID id, String name, String username, String email, String password) {
         this.id = id;
         this.name = name;
         this.username = username;
@@ -54,7 +56,7 @@ public class User {
         this.password = password;
     }
 
-    public User(Long id, String name, String username, String email, String password, Date email_verified_at, Date created_at, Date updated_at) {
+    public User(UUID id, String name, String username, String email, String password, Date email_verified_at, Date created_at, Date updated_at) {
         this.id = id;
         this.name = name;
         this.username = username;
@@ -65,11 +67,11 @@ public class User {
         this.updated_at = updated_at;
     }
 
-    public Long getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 

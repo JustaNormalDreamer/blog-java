@@ -21,10 +21,10 @@ public class PersonTest {
     @Client("/")
     HttpClient client;
 
-    @Test
-    public void test_it_is_able_to_fetch_persons_list() {
-        String response = client.toBlocking()
-                .retrieve(HttpRequest.GET("/persons"));
-        Assertions.assertNotEquals("Hello World", response);
-    }
+//    @Test
+//    public void test_it_is_able_to_fetch_persons_list() {
+//        String response = client.toBlocking()
+//                .retrieve(HttpRequest.GET("/persons"));
+//        Assertions.assertNotEquals("Hello World", response);
+//    }
 }

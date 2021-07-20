@@ -7,70 +7,27 @@
 
 package micronaut.java.blog.posts;
 
-import io.micronaut.data.annotation.DateCreated;
-import io.micronaut.data.annotation.DateUpdated;
-import micronaut.java.users.User;
-import org.hibernate.annotations.GenericGenerator;
+import io.micronaut.core.annotation.Introspected;
 
-import javax.persistence.*;
-import java.io.Serializable;
 import java.util.Date;
 import java.util.UUID;
 
-@Entity
-@Table(name = "posts")
-public class Post implements Serializable {
-    @Id
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+@Introspected
+public class PostResource {
     private UUID id;
-
     private String name;
-
     private String description;
-
     private boolean status;
-
-    @ManyToOne
-    private User user;
-
-    @DateCreated
     private Date created_at;
-
-    @DateUpdated
     private Date updated_at;
 
-    public Post() {}
-
-    public Post(String name, String description, boolean status) {
-        this.name = name;
-        this.description = description;
-        this.status = status;
-    }
-
-    public Post(UUID id, String name, String description, boolean status) {
+    public PostResource(UUID id, String name, String description, boolean status, Date created_at, Date updated_at) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.status = status;
-    }
-
-    public Post(UUID id, String name, String description, boolean status, User user, Date created_at, Date updated_at) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.status = status;
-        this.user = user;
         this.created_at = created_at;
         this.updated_at = updated_at;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
     }
 
     public UUID getId() {

@@ -7,8 +7,12 @@
 
 package micronaut.java.blog.posts;
 
+import io.micronaut.http.HttpResponse;
+
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -17,12 +21,17 @@ public class PostService {
     @Inject
     private PostRepository postRepository;
 
-    public Iterable<Post> fetchPosts() {
-        return postRepository.findAll();
+    public HttpResponse<List<PostResource>> fetchPosts() {
+        List<PostResource> postResources = new ArrayList<>();
+        for (Post post: postRepository.findAll()) {
+            postResources.add(new PostResource(post.getId(), post.getName(), post.getDescription(), post.isStatus(), post.getCreated_at(), post.getUpdated_at()));
+        }
+
+        return HttpResponse.ok(postResources);
     }
 
-    public Optional<Post> fetchPost(UUID id) {
-        return postRepository.findById(id);
+    public Optional<PostResource> fetchPost(UUID id) {
+        return postRepository.findOne(id);
     }
 
     public Post storePost(Post post) {

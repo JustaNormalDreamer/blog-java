@@ -14,4 +14,8 @@ import java.util.UUID;
 
 @Repository
 public interface UserRepository extends CrudRepository<User, UUID> {
+
+    public int countByUsername(String username);
+
+    public int countByEmail(String email);
 }

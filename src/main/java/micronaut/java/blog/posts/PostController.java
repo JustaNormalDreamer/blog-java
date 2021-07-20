@@ -10,26 +10,32 @@ package micronaut.java.blog.posts;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.MediaType;
 import io.micronaut.http.annotation.*;
+import io.micronaut.security.annotation.Secured;
+import io.micronaut.security.rules.SecurityRule;
 
+import javax.annotation.security.PermitAll;
 import javax.inject.Inject;
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 @Controller("posts")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
+@Secured(SecurityRule.IS_AUTHENTICATED)
+@PermitAll
 public class PostController {
     @Inject
     private PostService postService;
 
     @Get
-    public Iterable<Post> index() {
+    public HttpResponse<List<PostResource>> index() {
         return postService.fetchPosts();
     }
 
     @Get("{id}")
-    public Optional<Post> show(@PathVariable("id") UUID id) {
+    public Optional<PostResource> show(@PathVariable("id") UUID id) {
         return postService.fetchPost(id);
     }
 

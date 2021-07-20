@@ -1,6 +1,18 @@
 micronaut:
   application:
     name: micronautJava
+  security:
+    authentication: bearer
+    token:
+      jwt:
+        generator:
+          access-token:
+            expiration: 86400
+        signatures:
+          secret:
+            generator:
+              secret: ${JWT_SECRET:'eyJhbGciOiJIUzI1NiJ9.eyJSb2xlIjoiQWRtaW4iLCJJc3N1ZXIiOiJJc3N1ZXIiLCJVc2VybmFtZSI6IkphdmFJblVzZSIsImV4cCI6MTYyNjY4MTQ0MCwiaWF0IjoxNjI2NjgxNDQwfQ.JE2WJs6egnvAriXdmz1qjIBQgrNZpONMH8YXDTczSSY'}
+              jws-algorithm: HS256
   server:
     cors:
       enabled: true
@@ -51,5 +63,6 @@ jpa:
         - 'micronaut.java.person'
         - 'micronaut.java.users'
         - 'micronaut.java.blog.posts'
+
 
 

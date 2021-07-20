@@ -8,6 +8,9 @@
 package micronaut.java.users;
 
 import io.micronaut.core.annotation.Introspected;
+import micronaut.java.users.validation.ConfirmPassword;
+import micronaut.java.users.validation.EmailExists;
+import micronaut.java.users.validation.UsernameExists;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Max;
@@ -25,10 +28,12 @@ public class UserRequest {
     @NotBlank
     @Min(6)
     @Max(20)
+    @UsernameExists
     private String username;
 
     @NotBlank
     @Email
+    @EmailExists
     private String email;
 
     @NotBlank

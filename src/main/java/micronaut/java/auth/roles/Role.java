@@ -5,7 +5,7 @@
  *
  */
 
-package micronaut.java.blog.posts;
+package micronaut.java.auth.roles;
 
 import io.micronaut.data.annotation.DateCreated;
 import io.micronaut.data.annotation.DateUpdated;
@@ -13,23 +13,20 @@ import micronaut.java.users.User;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.UUID;
 
 @Entity
-@Table(name = "posts")
-public class Post implements Serializable {
+@Table(name = "roles")
+public class Role implements Serializable {
     @Id
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
     private UUID id;
 
     private String name;
-
-    private String description;
-
-    private boolean status;
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private User user;
@@ -40,36 +37,18 @@ public class Post implements Serializable {
     @DateUpdated
     private Date updated_at;
 
-    public Post() {}
+    public Role() {}
 
-    public Post(String name, String description, boolean status) {
-        this.name = name;
-        this.description = description;
-        this.status = status;
-    }
-
-    public Post(UUID id, String name, String description, boolean status) {
+    public Role(UUID id, String name, User user, Date created_at, Date updated_at) {
         this.id = id;
         this.name = name;
-        this.description = description;
-        this.status = status;
-    }
-
-    public Post(UUID id, String name, String description, boolean status, User user, Date created_at, Date updated_at) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.status = status;
         this.user = user;
         this.created_at = created_at;
         this.updated_at = updated_at;
     }
 
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
+    public Role(String name, User user) {
+        this.name = name;
         this.user = user;
     }
 
@@ -87,22 +66,6 @@ public class Post implements Serializable {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public boolean isStatus() {
-        return status;
-    }
-
-    public void setStatus(boolean status) {
-        this.status = status;
     }
 
     public Date getCreated_at() {

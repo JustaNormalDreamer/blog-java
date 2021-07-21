@@ -5,7 +5,7 @@
  *
  */
 
-package micronaut.java.users.validation;
+package micronaut.java.validation;
 
 import io.micronaut.core.annotation.AnnotationValue;
 import io.micronaut.core.annotation.NonNull;
@@ -15,13 +15,13 @@ import micronaut.java.users.UserRepository;
 
 import javax.inject.Inject;
 
-public class EmailExistsRule implements ConstraintValidator<EmailExists, String> {
+public class UsernameExistsRule implements ConstraintValidator<UsernameExists, String> {
 
     @Inject
     private UserRepository userRepository;
 
     @Override
-    public boolean isValid(String value, @NonNull AnnotationValue<EmailExists> annotationMetadata, @NonNull ConstraintValidatorContext context) {
-        return value != null && userRepository.countByEmail(value) < 1;
+    public boolean isValid(String value, @NonNull  AnnotationValue<UsernameExists> annotationMetadata, @NonNull  ConstraintValidatorContext context) {
+        return value != null && userRepository.countByUsername(value) < 1;
     }
 }

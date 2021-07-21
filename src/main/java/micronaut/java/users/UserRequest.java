@@ -8,9 +8,9 @@
 package micronaut.java.users;
 
 import io.micronaut.core.annotation.Introspected;
-import micronaut.java.users.validation.ConfirmPassword;
-import micronaut.java.users.validation.EmailExists;
-import micronaut.java.users.validation.UsernameExists;
+import micronaut.java.validation.EmailExists;
+import micronaut.java.validation.UsernameExists;
+import micronaut.java.validation.matches.FieldMatch;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Max;
@@ -18,7 +18,7 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 
 @Introspected
-@ConfirmPassword
+@FieldMatch
 public class UserRequest {
     @NotBlank
     @Min(8)

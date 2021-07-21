@@ -57,12 +57,14 @@ jpa:
     packages-to-scan:
       - 'micronaut.java.person'
       - 'micronaut.java.users'
+      - 'micronaut.java.auth.roles'
       - 'micronaut.java.blog.posts'
     entity-scan:
       packages:
         - 'micronaut.java.person'
         - 'micronaut.java.users'
         - 'micronaut.java.blog.posts'
+        - 'micronaut.java.auth.roles'
 
 
 

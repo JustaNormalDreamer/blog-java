@@ -7,8 +7,10 @@
 
 package micronaut.java.users;
 
+import io.micronaut.core.annotation.Nullable;
 import io.micronaut.data.annotation.DateCreated;
 import io.micronaut.data.annotation.DateUpdated;
+import micronaut.java.auth.roles.Role;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -34,6 +36,10 @@ public class User implements Serializable {
 
     private Date email_verified_at;
 
+    @Nullable
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    private Role role;
+
     @DateCreated
     private Date created_at;
 
@@ -47,6 +53,18 @@ public class User implements Serializable {
         this.username = username;
         this.email = email;
         this.password = password;
+    }
+
+    public User(UUID id, String name, String username, String email, String password, Date email_verified_at, Role role, Date created_at, Date updated_at) {
+        this.id = id;
+        this.name = name;
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.email_verified_at = email_verified_at;
+        this.role = role;
+        this.created_at = created_at;
+        this.updated_at = updated_at;
     }
 
     public User(UUID id, String name, String username, String email, String password) {
@@ -114,6 +132,14 @@ public class User implements Serializable {
 
     public void setEmail_verified_at(Date email_verified_at) {
         this.email_verified_at = email_verified_at;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 
     public Date getCreated_at() {

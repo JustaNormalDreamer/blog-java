@@ -5,7 +5,7 @@
  *
  */
 
-package micronaut.java.users.validation;
+package micronaut.java.validation;
 
 import io.micronaut.core.annotation.AnnotationValue;
 import io.micronaut.core.annotation.NonNull;

@@ -5,7 +5,7 @@
  *
  */
 
-package micronaut.java.users.validation;
+package micronaut.java.validation;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;

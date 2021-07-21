@@ -5,22 +5,24 @@
  *
  */
 
-package micronaut.java.users.validation;
-
+package micronaut.java.validation.matches;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;
 import java.lang.annotation.*;
 
 @Documented
-@Target({ ElementType.ANNOTATION_TYPE, ElementType.FIELD })
+@Target({ ElementType.ANNOTATION_TYPE, ElementType.TYPE })
 @Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = UsernameExistsRule.class)
-public @interface UsernameExists {
-    String message() default "Username has been taken.";
+@Constraint(validatedBy = FieldMatchValidator.class)
+public @interface FieldMatch {
+    String message() default "Confirmation password doesn't match.";
 
     Class<?>[] groups() default {};
 
     public abstract Class<? extends Payload>[] payload() default{};
 
+//    String field();
+//
+//    String fieldMatch();
 }

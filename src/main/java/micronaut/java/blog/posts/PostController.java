@@ -24,7 +24,6 @@ import java.util.UUID;
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 @Secured(SecurityRule.IS_AUTHENTICATED)
-@PermitAll
 public class PostController {
     @Inject
     private PostService postService;

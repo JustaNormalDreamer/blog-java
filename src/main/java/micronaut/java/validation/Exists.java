@@ -5,20 +5,23 @@
  *
  */
 
-package micronaut.java.users.validation;
+package micronaut.java.validation;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;
 import java.lang.annotation.*;
 
 @Documented
-@Target({ ElementType.ANNOTATION_TYPE, ElementType.TYPE })
+@Target({ ElementType.ANNOTATION_TYPE, ElementType.FIELD })
 @Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = ConfirmPasswordRule.class)
-public @interface ConfirmPassword {
-    String message() default "Confirmation password doesn't match.";
+@Constraint(validatedBy = ExistsRule.class)
+public @interface Exists {
+    String message() default "Model already exists.";
 
     Class<?>[] groups() default {};
 
     public abstract Class<? extends Payload>[] payload() default{};
+
+    String bodyMessage() default "This is the test message.";
+
 }

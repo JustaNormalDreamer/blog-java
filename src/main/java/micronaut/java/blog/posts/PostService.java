@@ -8,41 +8,55 @@
 package micronaut.java.blog.posts;
 
 import io.micronaut.http.HttpResponse;
+import io.micronaut.http.HttpStatus;
+import micronaut.java.auth.roles.Role;
+import micronaut.java.helpers.JsonResponse;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 @Singleton
-public class PostService {
+public class PostService implements IPostService {
     @Inject
     private PostRepository postRepository;
 
-    public HttpResponse<List<PostResource>> fetchPosts() {
-        List<PostResource> postResources = new ArrayList<>();
-        for (Post post: postRepository.findAll()) {
-            postResources.add(new PostResource(post.getId(), post.getName(), post.getDescription(), post.isStatus(), post.getCreated_at(), post.getUpdated_at()));
+    @Override
+    public HttpResponse<?> fetchModels() {
+        JsonResponse<Post> res = new JsonResponse<>("PL-200", "Posts has been fetched.", "Posts has been fetched.", postRepository.findAll());
+        return HttpResponse.status(HttpStatus.OK).body(res.response());
+    }
+
+    @Override
+    public HttpResponse<?> fetchModel(UUID id) {
+        Optional<PostResource> postResource = postRepository.findOne(id);
+
+        if(postResource.isPresent()) {
+            JsonResponse<Optional<PostResource>> res = new JsonResponse<>("P-200", "Post has been fetched.", "Post has been fetched.", postRepository.findOne(id));
+            return HttpResponse.status(HttpStatus.OK).body(res.response());
         }
 
-        return HttpResponse.ok(postResources);
+        String message = String.format("Post of id: %s not found.", id);
+        return HttpResponse.status(HttpStatus.NOT_FOUND).body(new JsonResponse<>("P-404", message, message));
     }
 
-    public Optional<PostResource> fetchPost(UUID id) {
-        return postRepository.findOne(id);
+    @Override
+    public HttpResponse<?> storeModel(Post model) {
+        JsonResponse<Post> res = new JsonResponse<>("PC-201", "Post has been created.", "Post has been created.", postRepository.save(model));
+        return HttpResponse.status(HttpStatus.CREATED).body(res.response());
     }
 
-    public Post storePost(Post post) {
-        return postRepository.save(post);
+    @Override
+    public HttpResponse<?> updateModel(Post model) {
+        JsonResponse<Post> res = new JsonResponse<>("PU-200", "Post has been updated.", "Post has been updated.", postRepository.update(model));
+        return HttpResponse.status(HttpStatus.OK).body(res.response());
     }
 
-    public Post updatePost(Post post) {
-        return postRepository.update(post);
-    }
-
-    public void deletePost(UUID id) {
+    @Override
+    public HttpResponse<?> deleteModel(UUID id) {
         postRepository.deleteById(id);
+        JsonResponse<Role> res = new JsonResponse<>("PD-200", "Post has been deleted.", "Post has been deleted.");
+        return HttpResponse.status(HttpStatus.OK).body(res.response());
     }
 }

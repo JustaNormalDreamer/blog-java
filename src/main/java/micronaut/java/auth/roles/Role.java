@@ -9,13 +9,18 @@ package micronaut.java.auth.roles;
 
 import io.micronaut.data.annotation.DateCreated;
 import io.micronaut.data.annotation.DateUpdated;
+import io.micronaut.data.annotation.MappedEntity;
+import io.micronaut.data.annotation.TypeDef;
+import io.micronaut.data.model.DataType;
 import micronaut.java.users.User;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 @Entity

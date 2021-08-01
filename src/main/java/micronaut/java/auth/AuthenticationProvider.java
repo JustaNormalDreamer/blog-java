@@ -17,9 +17,11 @@ import io.reactivex.Flowable;
 import org.reactivestreams.Publisher;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 
 @Singleton
-public class AuthenticationProviderUserPassword implements AuthenticationProvider {
+public class AuthenticationProvider implements io.micronaut.security.authentication.AuthenticationProvider {
 
     @Inject
     private AuthService authService;
@@ -32,7 +34,7 @@ public class AuthenticationProviderUserPassword implements AuthenticationProvide
             String password = (String) authenticationRequest.getSecret();
 
             if(authService.validCredentials(username, password)) {
-                emitter.onNext(new UserDetails(username, new ArrayList<>()));
+                emitter.onNext(new ClaimUserDetails(username, new ArrayList<>(Arrays.asList("INDEX_ROLE", "SHOW_ROLE", "CREATE_ROLE", "UPDATE_ROLE", "DELETE_ROLE")), "team7hookage@gmail.com"));
                 emitter.onComplete();
             } else {
                 emitter.onError(new AuthenticationException(new AuthenticationFailed()));

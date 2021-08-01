@@ -8,43 +8,48 @@
 package micronaut.java.auth.roles;
 
 import io.micronaut.http.HttpResponse;
+import io.micronaut.http.HttpStatus;
+import micronaut.java.helpers.JsonResponse;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.util.*;
 
 @Singleton
-public class RoleService {
+public class RoleService implements IRoleService {
     @Inject
     private RoleRepository roleRepository;
 
-    public Iterable<Role> fetchRoles() {
-        return roleRepository.findAll();
+    public HttpResponse<?> fetchModels() {
+        JsonResponse<Role> res = new JsonResponse<>("RL-200", "Roles has been fetched.", "Roles has been fetched.", roleRepository.findAll());
+        return HttpResponse.status(HttpStatus.OK).body(res.response());
     }
 
-    public Optional<RoleResource> fetchRole(UUID id) {
-        return roleRepository.findOne(id);
+    public HttpResponse<?> fetchModel(UUID id) {
+        Optional<RoleResource> roleResource = roleRepository.findOne(id);
+
+        if(roleResource.isPresent()) {
+            JsonResponse<Optional<RoleResource>> res = new JsonResponse<>("R-200", "Role has been fetched.", "Role has been fetched.", roleRepository.findOne(id));
+            return HttpResponse.status(HttpStatus.OK).body(res.response());
+        }
+
+        String message = String.format("Role of id: %s not found.", id);
+        return HttpResponse.status(HttpStatus.NOT_FOUND).body(new JsonResponse<>("R-404", message, message));
     }
 
-    public Role storeRole(Role role) {
-        return roleRepository.save(role);
+    public HttpResponse<?> storeModel(Role role) {
+        JsonResponse<Role> res = new JsonResponse<>("RC-201", "Role has been created.", "Role has been created.", roleRepository.save(role));
+        return HttpResponse.status(HttpStatus.CREATED).body(res.response());
     }
 
-    public Role updateRole(UUID id, Role role) {
-        return roleRepository.update(role);
+    public HttpResponse<?> updateModel(Role role) {
+        JsonResponse<Role> res = new JsonResponse<>("RU-200", "Role has been updated.", "Role has been updated.", roleRepository.update(role));
+        return HttpResponse.status(HttpStatus.OK).body(res.response());
     }
 
-    public HttpResponse<?> deleteRole(UUID id) {
+    public HttpResponse<?> deleteModel(UUID id) {
         roleRepository.deleteById(id);
-
-        Map<String, String> message = new HashMap<>();
-        message.put("code", "RL-D-200");
-        message.put("localizedMessage", "Role has been deleted successfully.");
-        message.put("message", "Role has been deleted successfully.");
-
-        return HttpResponse.ok(message);
+        JsonResponse<Role> res = new JsonResponse<>("RD-200", "Role has been deleted.", "Role has been deleted.");
+        return HttpResponse.status(HttpStatus.OK).body(res.response());
     }
-
-
-
 }

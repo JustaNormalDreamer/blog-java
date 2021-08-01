@@ -12,9 +12,11 @@ import io.micronaut.http.MediaType;
 import io.micronaut.http.annotation.*;
 import io.micronaut.security.annotation.Secured;
 import io.micronaut.security.rules.SecurityRule;
+import micronaut.java.IService;
 import micronaut.java.users.User;
 import micronaut.java.users.UserRepository;
 
+import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import javax.validation.Valid;
 import java.util.Optional;
@@ -26,38 +28,43 @@ import java.util.UUID;
 @Secured(SecurityRule.IS_AUTHENTICATED)
 public class RoleController {
     @Inject
-    private RoleService roleService;
+    private IRoleService roleService;
 
     @Inject
     private UserRepository userRepository;
 
     @Get
-    public Iterable<Role> index() {
-        return roleService.fetchRoles();
+    @RolesAllowed({ "INDEX_ROLE" })
+    public HttpResponse<?> index() {
+        return roleService.fetchModels();
     }
 
     @Get("{id}")
-    public Optional<RoleResource> show(@PathVariable("id")UUID id) {
-        return roleService.fetchRole(id);
+    @RolesAllowed({ "SHOW_ROLE" })
+    public HttpResponse<?> show(@PathVariable("id")UUID id) {
+        return roleService.fetchModel(id);
     }
 
     @Post
-    public Role store(@Body @Valid RoleRequest roleRequest) {
+    @RolesAllowed({ "CREATE_ROLE" })
+    public HttpResponse<?> store(@Body @Valid RoleRequest roleRequest) {
         Optional<User> user = userRepository.findById(roleRequest.getUser_id());
         Role role = new Role(roleRequest.getName(), user.get());
-        return roleService.storeRole(role);
+        return roleService.storeModel(role);
     }
 
     @Put("{id}")
-    public Role store(@PathVariable("id") UUID id, @Body @Valid RoleRequest roleRequest) {
+    @RolesAllowed({ "UPDATE_ROLE" })
+    public HttpResponse<?> store(@PathVariable("id") UUID id, @Body @Valid RoleRequest roleRequest) {
         Optional<User> user = userRepository.findById(roleRequest.getUser_id());
         Role role = new Role(roleRequest.getName(), user.get());
         role.setId(id);
-        return roleService.updateRole(id, role);
+        return roleService.updateModel(role);
     }
 
     @Delete("{id}")
+    @RolesAllowed({ "DELETE_ROLE" })
     public HttpResponse<?> destroy(@PathVariable("id") UUID id) {
-        return roleService.deleteRole(id);
+        return roleService.deleteModel(id);
     }
 }

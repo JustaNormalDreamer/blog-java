@@ -40,11 +40,7 @@ public class UserService {
         return user.map(value -> HttpResponse.ok(new UserResource(value.getId(), value.getName(), value.getUsername(), value.getEmail(), value.getCreated_at(), value.getUpdated_at()))).orElse(null);
     }
 
-    public User storeUser(User user) throws NoSuchAlgorithmException {
-        MessageDigest messageDigest = MessageDigest.getInstance("SHA-512");
-        messageDigest.update(user.getPassword().getBytes(StandardCharsets.UTF_8));
-        byte[] hashed = messageDigest.digest();
-        user.setPassword(hashed.toString());
+    public User storeUser(User user) {
         return userRepository.save(user);
     }
 

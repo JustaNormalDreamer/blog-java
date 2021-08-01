@@ -14,8 +14,6 @@ import io.micronaut.validation.validator.constraints.ConstraintValidatorContext;
 import micronaut.java.users.UserRequest;
 
 public class ConfirmPasswordRule implements ConstraintValidator<ConfirmPassword, UserRequest> {
-
-
     @Override
     public boolean isValid(UserRequest value, @NonNull AnnotationValue<ConfirmPassword> annotationMetadata, @NonNull ConstraintValidatorContext context) {
         System.out.println("Validating password check.");

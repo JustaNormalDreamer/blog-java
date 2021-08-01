@@ -8,6 +8,7 @@
 package micronaut.java.auth;
 
 import io.micronaut.http.HttpResponse;
+import micronaut.java.HashPassword;
 import micronaut.java.users.User;
 
 import javax.inject.Inject;
@@ -21,20 +22,22 @@ public class AuthService {
     @Inject
     private AuthRepository authRepository;
 
+    @Inject
+    private HashPassword hashPassword;
+
     public HttpResponse<ProfileResource> fetchByUsername(String username) {
         User user = authRepository.findByUsername(username);
         ProfileResource profileResource = new ProfileResource(user.getId(), user.getName(), user.getUsername(), user.getEmail(), user.getCreated_at(), user.getUpdated_at());
         return HttpResponse.ok(profileResource);
     }
 
-    public boolean validCredentials(String username, String password) throws NoSuchAlgorithmException {
-        MessageDigest messageDigest = MessageDigest.getInstance("SHA-256");
-        byte[] hashed = messageDigest.digest(password.getBytes(StandardCharsets.UTF_8));
-        System.out.println(password);
-        User user = authRepository.findByUsernameAndPassword(username, password);
+    public boolean validCredentials(String username, String password) {
+        User user = authRepository.findByUsername(username);
+
         if(user == null) {
-            throw new UnauthorizedException("Invalid credentials, either the username or password is incorrect.");
+            throw new UnauthorizedException("User doesn't exist.");
         }
-        return true;
+
+        return hashPassword.matchPassword(password, user.getPassword());
     }
 }

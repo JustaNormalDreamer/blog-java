@@ -10,9 +10,11 @@ package micronaut.java.users;
 import io.micronaut.core.annotation.Nullable;
 import io.micronaut.data.annotation.DateCreated;
 import io.micronaut.data.annotation.DateUpdated;
+import micronaut.java.HashPassword;
 import micronaut.java.auth.roles.Role;
 import org.hibernate.annotations.GenericGenerator;
 
+import javax.inject.Inject;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
@@ -156,5 +158,11 @@ public class User implements Serializable {
 
     public void setUpdated_at(Date updated_at) {
         this.updated_at = updated_at;
+    }
+
+    @PrePersist
+    public void hashPassword() {
+        HashPassword hashPassword = new HashPassword();
+        this.password = hashPassword.makeHash(this.password);
     }
 }

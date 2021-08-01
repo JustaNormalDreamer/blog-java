@@ -20,6 +20,8 @@ micronaut:
         web:
           allowedOrigins:
             - http://localhost:8080
+            - https://codesandbox.io
+            - https://06v0b.csb.app
           allowedMethods:
             - POST
             - PUT
@@ -59,12 +61,16 @@ jpa:
       - 'micronaut.java.users'
       - 'micronaut.java.auth.roles'
       - 'micronaut.java.blog.posts'
+      - 'micronaut.java.events'
     entity-scan:
       packages:
         - 'micronaut.java.person'
         - 'micronaut.java.users'
         - 'micronaut.java.blog.posts'
         - 'micronaut.java.auth.roles'
+        - 'micronaut.java.events'
+api:
+  version: v2
 
 
 
